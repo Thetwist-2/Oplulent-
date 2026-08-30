@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy 20th, Miss Opulent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Playball&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+<style>
+  :root{
+    --emerald:#0f3d3a;
+    --emerald-deep:#082524;
+    --purple:#3c1a5b;
+    --gold:#d9af5c;
+    --gold-bright:#f3d896;
+    --magenta:#e8447e;
+    --cream:#fbf3e4;
+    --ink:#1b1024;
+    --shadow: 0 20px 60px rgba(8,37,36,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background: var(--cream);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:inherit;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(232,68,126,0.35), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(217,175,92,0.25), transparent 50%),
+      linear-gradient(160deg, var(--purple) 0%, var(--emerald) 55%, var(--emerald-deep) 100%);
+    overflow:hidden;
+    padding: 6rem 1.5rem 4rem;
+    text-align:center;
+  }
+
+  .gem{
+    position:absolute;
+    width:22px; height:22px;
+    background:linear-gradient(135deg, var(--gold-bright), var(--gold));
+    transform:rotate(45deg);
+    opacity:0.85;
+    box-shadow:0 0 14px rgba(243,216,150,0.6);
+    animation: drift 9s ease-in-out infinite;
+  }
+  .gem.pink{background:linear-gradient(135deg, #ff8fb8, var(--magenta));}
+  .gem.small{width:12px;height:12px;}
+  .gem.big{width:30px;height:30px;}
+
+  .gem:nth-child(1){top:8%; left:10%; animation-delay:0s;}
+  .gem:nth-child(2){top:18%; left:85%; animation-delay:1.2s;}
+  .gem:nth-child(3){top:70%; left:6%; animation-delay:2.1s;}
+  .gem:nth-child(4){top:80%; left:90%; animation-delay:0.6s;}
+  .gem:nth-child(5){top:35%; left:92%; animation-delay:3s;}
+  .gem:nth-child(6){top:50%; left:3%; animation-delay:1.8s;}
+  .gem:nth-child(7){top:12%; left:50%; animation-delay:2.6s;}
+  .gem:nth-child(8){top:88%; left:45%; animation-delay:0.9s;}
+
+  @keyframes drift{
+    0%,100%{ transform:rotate(45deg) translateY(0px);}
+    50%{ transform:rotate(45deg) translateY(-22px);}
+  }
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.7rem;
+    color:var(--gold-bright);
+    margin-bottom:1.6rem;
+  }
+  .eyebrow::before, .eyebrow::after{
+    content:"✦";
+    margin:0 0.6em;
+    color:var(--magenta);
+  }
+
+  .headline{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-style:normal;
+    color:var(--cream);
+    font-size:clamp(2.4rem, 6vw, 4.4rem);
+    line-height:1.05;
+    margin:0;
+  }
+
+  .script-name{
+    display:block;
+    font-family:'Playball', cursive;
+    font-size:clamp(3.2rem, 9vw, 6rem);
+    background:linear-gradient(90deg, var(--gold-bright), var(--magenta) 60%, var(--gold-bright));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-top:0.2rem;
+    line-height:1;
+  }
+
+  .sub{
+    max-width:520px;
+    margin:1.8rem auto 0;
+    color:rgba(251,243,228,0.82);
+    font-size:1.05rem;
+    line-height:1.6;
+  }
+
+  .countdown{
+    margin-top:3rem;
+    display:inline-flex;
+    gap:0.9rem;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .count-chip{
+    background:rgba(251,243,228,0.08);
+    border:1px solid rgba(217,175,92,0.5);
+    backdrop-filter:blur(6px);
+    border-radius:14px;
+    padding:0.9rem 1.1rem;
+    min-width:74px;
+  }
+  .count-num{
+    font-family:'Fraunces', serif;
+    font-size:1.7rem;
+    font-weight:600;
+    color:var(--gold-bright);
+    display:block;
+  }
+  .count-label{
+    font-family:'Space Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:rgba(251,243,228,0.6);
+  }
+
+  .scroll-hint{
+    position:absolute;
+    bottom:2rem; left:50%;
+    transform:translateX(-50%);
+    color:rgba(251,243,228,0.55);
+    font-family:'Space Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- RX CARD ---------- */
+  .rx-section{
+    padding:6rem 1.5rem;
+    display:flex;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(232,68,126,0.08), transparent 40%),
+      var(--cream);
+  }
+
+  .rx-card{
+    width:100%;
+    max-width:620px;
+    background:#fffdf8;
+    border-radius:6px;
+    box-shadow:var(--shadow);
+    position:relative;
+    padding:2.6rem 2.4rem 2rem;
+    border-top:10px solid var(--emerald);
+  }
+  .rx-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:2.4rem; right:2.4rem;
+    height:1px;
+    background:repeating-linear-gradient(90deg, var(--gold) 0 8px, transparent 8px 16px);
+  }
+
+  .rx-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:1.6rem;
+  }
+  .rx-mark{
+    font-family:'Fraunces', serif;
+    font-size:2.6rem;
+    font-weight:700;
+    font-style:italic;
+    color:var(--emerald);
+  }
+  .rx-meta{
+    text-align:right;
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    color:#8a7d63;
+    line-height:1.6;
+  }
+  .rx-meta b{color:var(--ink);}
+
+  .rx-title{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    font-weight:600;
+    margin:0 0 0.3rem;
+  }
+  .rx-alias{
+    font-family:'Playball', cursive;
+    color:var(--magenta);
+    font-size:1.3rem;
+    margin-bottom:1.6rem;
+  }
+
+  .rx-list{
+    list-style:none;
+    margin:0 0 2rem;
+    padding:0;
+  }
+  .rx-list li{
+    display:grid;
+    grid-template-columns:26px 1fr;
+    gap:0.7rem;
+    padding:0.85rem 0;
+    border-bottom:1px dashed #e6dcc4;
+    font-size:0.96rem;
+    line-height:1.5;
+  }
+  .rx-list li:last-child{border-bottom:none;}
+  .rx-bullet{
+    font-family:'Fraunces', serif;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .rx-list b{color:var(--emerald);}
+
+  .rx-footer{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.68rem;
+    letter-spacing:0.04em;
+    color:#8a7d63;
+    padding-top:1rem;
+    border-top:2px solid var(--emerald);
+  }
+
+  /* ---------- LETTER ---------- */
+  .letter-section{
+    padding:6rem 1.5rem 7rem;
+    background:linear-gradient(180deg, var(--cream) 0%, #f3e6ce 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  .letter-heading{
+    font-family:'Fraunces', serif;
+    font-size:clamp(1.6rem,4vw,2.3rem);
+    margin-bottom:0.5rem;
+  }
+  .letter-instruction{
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--magenta);
+    margin-bottom:2.6rem;
+  }
+
+  .envelope-wrap{
+    position:relative;
+    width:min(90vw, 360px);
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .envelope{
+    background:linear-gradient(160deg, var(--purple), var(--emerald-deep));
+    border-radius:10px;
+    height:220px;
+    position:relative;
+    box-shadow:var(--shadow);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  .envelope-wrap.open .envelope{
+    transform: scale(0.92) translateY(-10px);
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .seal{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #a97f2e 100%);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:700;
+    font-size:1.5rem;
+    color:var(--purple);
+    box-shadow:0 6px 16px rgba(0,0,0,0.35);
+    animation: pulse-seal 2.4s ease-in-out infinite;
+    overflow:hidden;
+  }
+  .seal-web{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+  .seal-letter{
+    position:relative;
+    z-index:1;
+    text-shadow:0 1px 2px rgba(255,255,255,0.35);
+  }
+  @keyframes pulse-seal{
+    0%,100%{ transform:scale(1);}
+    50%{ transform:scale(1.06);}
+  }
+
+  .tap-note{
+    margin-top:1rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.65rem;
+    color:#9a7f45;
+    letter-spacing:0.1em;
+  }
+
+  .letter-paper{
+    max-width:560px;
+    background:#fffdf8;
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:3rem 2.6rem;
+    margin-top:-40px;
+    opacity:0;
+    transform:translateY(24px);
+    max-height:0;
+    overflow:hidden;
+    transition: opacity 0.7s ease, transform 0.7s ease, max-height 0.9s ease, margin 0.7s ease, padding 0.7s ease;
+  }
+  .envelope-wrap.open + .letter-paper,
+  .letter-paper.open{
+    opacity:1;
+    transform:translateY(0);
+    max-height:900px;
+    margin-top:1.6rem;
+  }
+
+  .letter-paper p{
+    font-family:'Fraunces', serif;
+    font-size:1.08rem;
+    line-height:1.85;
+    text-align:left;
+    color:#2a1c33;
+    margin:0 0 1.2rem;
+  }
+  .letter-sign{
+    font-family:'Playball', cursive;
+    font-size:1.6rem;
+    color:var(--magenta);
+    text-align:right;
+    margin-top:1.4rem;
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing{
+    padding:5rem 1.5rem 6rem;
+    text-align:center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(232,68,126,0.18), transparent 55%),
+      linear-gradient(180deg, var(--emerald-deep), var(--purple));
+    color:var(--cream);
+  }
+  .closing h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2rem,5vw,3rem);
+    margin-bottom:0.6rem;
+  }
+  .closing .script-name{font-size:clamp(2.6rem,7vw,4rem); margin-top:0;}
+  .closing p{
+    color:rgba(251,243,228,0.75);
+    max-width:420px;
+    margin:1.2rem auto 2.4rem;
+  }
+
+  .celebrate-btn{
+    font-family:'Space Mono', monospace;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-size:0.8rem;
+    background:linear-gradient(90deg, var(--gold-bright), var(--gold));
+    color:var(--ink);
+    border:none;
+    padding:1rem 2.2rem;
+    border-radius:40px;
+    cursor:pointer;
+    box-shadow:0 10px 30px rgba(217,175,92,0.35);
+    transition: transform 0.2s ease;
+  }
+  .celebrate-btn:hover{transform:translateY(-3px);}
+  .celebrate-btn:focus-visible, .envelope-wrap:focus-visible .envelope{
+    outline:3px solid var(--gold-bright);
+    outline-offset:4px;
+  }
+
+  footer{
+    text-align:center;
+    padding:2rem 1rem;
+    font-family:'Space Mono', monospace;
+    font-size:0.65rem;
+    letter-spacing:0.08em;
+    color:rgba(251,243,228,0.4);
+    background:var(--emerald-deep);
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="gem"></div>
+  <div class="gem pink small"></div>
+  <div class="gem big"></div>
+  <div class="gem pink"></div>
+  <div class="gem small"></div>
+  <div class="gem"></div>
+  <div class="gem pink small"></div>
+  <div class="gem big"></div>
+
+  <div>
+    <p class="eyebrow">A royal decree for</p>
+    <h1 class="headline">Happy 20th Birthday
+      <span class="script-name">Miss Opulent</span>
+    </h1>
+    <p class="sub">Stella Wilson turns twenty on September 4th — and honestly, the world should be throwing a parade. Since it isn't, this page will have to do.</p>
+
+    <div class="countdown" id="countdown" aria-live="polite">
+      <div class="count-chip"><span class="count-num" id="cd-days">--</span><span class="count-label">Days</span></div>
+      <div class="count-chip"><span class="count-num" id="cd-hours">--</span><span class="count-label">Hours</span></div>
+      <div class="count-chip"><span class="count-num" id="cd-mins">--</span><span class="count-label">Mins</span></div>
+      <div class="count-chip"><span class="count-num" id="cd-secs">--</span><span class="count-label">Secs</span></div>
+    </div>
+  </div>
+
+  <p class="scroll-hint">scroll for the prescription ↓</p>
+</section>
+
+<section class="rx-section">
+  <div class="rx-card">
+    <div class="rx-top">
+      <div class="rx-mark">℞</div>
+      <div class="rx-meta">
+        Date: <b>04 . 09 . 2026</b><br/>
+        Pharmacy: <b>Of the Heart</b><br/>
+        Prescriber: <b>Someone who adores you</b>
+      </div>
+    </div>
+
+    <h2 class="rx-title">Prescribed exclusively for the Birthday Queen</h2>
+    <p class="rx-alias">a.k.a. Miss Opulent</p>
+
+    <ul class="rx-list">
+      <li><span class="rx-bullet">℞</span><span><b>Patient:</b> Stella Wilson, age 20 as of Sept 4th.</span></li>
+      <li><span class="rx-bullet">℞</span><span><b>Currently studying:</b> BPharm at KNUST — future "Dr. Stella," no prescription required.</span></li>
+      <li><span class="rx-bullet">℞</span><span><b>Confidence</b> — 20mg, taken daily. Side effects include people staring in quiet admiration.</span></li>
+      <li><span class="rx-bullet">℞</span><span><b>Elegance</b> — apply liberally. No maximum dosage; she can't overdose on it.</span></li>
+      <li><span class="rx-bullet">℞</span><span><b>Joy</b> — as needed, always in stock, never on backorder.</span></li>
+      <li><span class="rx-bullet">℞</span><span><b>Love, from me</b> — unlimited refills, valid for life.</span></li>
+    </ul>
+
+    <div class="rx-footer">
+      <span>Refills: Unlimited</span>
+      <span>Expiry: Never</span>
+      <span>Note: she was already perfect — this is just for good measure.</span>
+    </div>
+  </div>
+</section>
+
+<section class="letter-section">
+  <h3 class="letter-heading">A sealed note</h3>
+  <p class="letter-instruction">tap the seal to open it</p>
+
+  <div class="envelope-wrap" id="envelope" tabindex="0" role="button" aria-expanded="false" aria-label="Open the sealed birthday letter">
+    <div class="envelope">
+      <div class="seal">
+        <svg class="seal-web" viewBox="0 0 64 64" aria-hidden="true">
+          <g stroke="rgba(60,26,91,0.45)" stroke-width="0.7" fill="none">
+            <line x1="32" y1="32" x2="32" y2="2"/>
+            <line x1="32" y1="32" x2="53.5" y2="10.5"/>
+            <line x1="32" y1="32" x2="62" y2="32"/>
+            <line x1="32" y1="32" x2="53.5" y2="53.5"/>
+            <line x1="32" y1="32" x2="32" y2="62"/>
+            <line x1="32" y1="32" x2="10.5" y2="53.5"/>
+            <line x1="32" y1="32" x2="2" y2="32"/>
+            <line x1="32" y1="32" x2="10.5" y2="10.5"/>
+            <path d="M32 9 L44 14 L49 26 L44 38 L32 43 L20 38 L15 26 L20 14 Z"/>
+            <path d="M32 17 L39.5 20 L43 27.5 L39.5 35 L32 38 L24.5 35 L21 27.5 L24.5 20 Z"/>
+            <path d="M32 24 L35.5 25.5 L37 29 L35.5 32.5 L32 34 L28.5 32.5 L27 29 L28.5 25.5 Z"/>
+          </g>
+        </svg>
+        <span class="seal-letter">S</span>
+      </div>
+    </div>
+  </div>
+  <p class="tap-note" id="tapNote">✦ click / tap the wax seal ✦</p>
+
+  <div class="letter-paper" id="letterPaper">
+    <p>Dear Stella,</p>
+    <p>Happy 20th birthday. Twenty looks incredible on you already, and something tells me you're going to wear this decade even better than the last.</p>
+    <p>Between mastering pharmacy at KNUST and just being effortlessly, wonderfully you, I hope you truly know how much you mean to me. I'm so glad you're in my life🫠 genuinely, deeply glad.</p>
+    <p>So here's to the woman you're becoming: as sharp as your textbooks, as bright as your name suggests, and every bit as opulent as I call you.</p>
+    <p class="letter-sign"> with so much love, always in your corner</p>
+  </div>
+</section>
+
+<section class="closing">
+  <h2>Here's to twenty,
+    <span class="script-name">Miss Opulent</span>
+  </h2>
+  <p>May this year bring you every bit of the sparkle you carry into every room.</p>
+  <button class="celebrate-btn" id="celebrateBtn">Celebrate 🎉</button>
+</section>
+
+<footer>made with love, for Stella Wilson</footer>
+
+<script>
+  // Countdown to Sept 4, 2026
+  const target = new Date("2026-09-04T00:00:00");
+  function updateCountdown(){
+    const now = new Date();
+    let diff = target - now;
+    if(diff < 0) diff = 0;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const mins = Math.floor((diff / (1000*60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    document.getElementById('cd-days').textContent = days;
+    document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Envelope open interaction
+  const envelope = document.getElementById('envelope');
+
+  function openLetter(){
+    envelope.classList.add('open');
+    envelope.setAttribute('aria-expanded','true');
+    document.getElementById('letterPaper').classList.add('open');
+    if(window.confetti){
+      confetti({ particleCount: 60, spread: 55, origin:{ y:0.6 }, colors:['#d9af5c','#e8447e','#3c1a5b'] });
+    }
+  }
+
+  envelope.addEventListener('click', openLetter);
+  envelope.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLetter(); }
+  });
+
+  // Celebrate button confetti burst
+  const btn = document.getElementById('celebrateBtn');
+  btn.addEventListener('click', ()=>{
+    if(!window.confetti) return;
+    const colors = ['#d9af5c','#f3d896','#e8447e','#3c1a5b'];
+    confetti({ particleCount: 120, spread: 90, origin:{ y:0.7 }, colors });
+    setTimeout(()=> confetti({ particleCount: 80, angle:60, spread:70, origin:{x:0}, colors }), 200);
+    setTimeout(()=> confetti({ particleCount: 80, angle:120, spread:70, origin:{x:1}, colors }), 300);
+  });
+</script>
+
+</body>
+</html>
