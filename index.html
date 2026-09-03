@@ -37,6 +37,91 @@
 
   a{color:inherit;}
 
+  /* ---------- MUSIC TOGGLE ---------- */
+  .music-toggle{
+    position:fixed;
+    top:1.2rem;
+    right:1.2rem;
+    z-index:200;
+    background:rgba(8,37,36,0.55);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(217,175,92,0.5);
+    color:var(--gold-bright);
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:1.05rem;
+    line-height:1;
+    transition:border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    opacity:0;
+    animation:musicFadeIn 0.8s ease forwards 1s;
+  }
+  .music-toggle:hover{
+    border-color:var(--magenta);
+    box-shadow:0 0 20px rgba(232,68,126,0.4);
+    color:var(--cream);
+    transform:translateY(-2px);
+  }
+  .music-toggle.playing{
+    color:var(--magenta);
+    border-color:var(--gold-bright);
+  }
+  .music-toggle:focus-visible{
+    outline:3px solid var(--gold-bright);
+    outline-offset:4px;
+  }
+  @keyframes musicFadeIn{ to{ opacity:1; } }
+
+  .press-me{
+    position:fixed;
+    top:1.75rem;
+    right:4.9rem;
+    z-index:200;
+    font-family:'Space Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold-bright);
+    background:rgba(8,37,36,0.55);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(217,175,92,0.4);
+    padding:0.4rem 0.7rem;
+    border-radius:20px;
+    opacity:0;
+    pointer-events:none;
+    white-space:nowrap;
+    animation:musicFadeIn 0.8s ease forwards 1.6s, pressBob 1.8s ease-in-out infinite 2.4s;
+  }
+  .press-me::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    right:-5px;
+    width:6px; height:6px;
+    background:inherit;
+    border-right:1px solid rgba(217,175,92,0.4);
+    border-top:1px solid rgba(217,175,92,0.4);
+    transform:translateY(-50%) rotate(45deg);
+  }
+  @keyframes pressBob{
+    0%,100%{ transform:translateX(0); }
+    50%{ transform:translateX(-4px); }
+  }
+  .press-me.hide{
+    animation:none;
+    opacity:0;
+    transition:opacity 0.4s ease;
+  }
+
+  @media (max-width:480px){
+    .press-me{ font-size:0.56rem; right:4.6rem; top:1.85rem; padding:0.35rem 0.6rem; }
+    .music-toggle{ width:40px; height:40px; }
+  }
+
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
@@ -292,6 +377,7 @@
     width:min(90vw, 360px);
     cursor:pointer;
     user-select:none;
+    margin-bottom:2.4rem;
   }
 
   .envelope{
@@ -350,6 +436,97 @@
     font-size:0.65rem;
     color:#9a7f45;
     letter-spacing:0.1em;
+    transition:color 0.4s ease;
+  }
+  .tap-note.ready{ color:var(--magenta); }
+
+  /* locked seal state */
+  .envelope-wrap.locked{ cursor:not-allowed; }
+  .envelope-wrap.locked .seal{ animation-play-state:paused; }
+  .lock-badge{
+    position:absolute;
+    top:-4px; right:-4px;
+    width:24px; height:24px;
+    background:var(--emerald-deep);
+    border:2px solid var(--gold-bright);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.72rem;
+    box-shadow:0 2px 8px rgba(0,0,0,0.4);
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .envelope-wrap:not(.locked) .lock-badge{
+    opacity:0;
+    transform:scale(0.4) rotate(-20deg);
+    pointer-events:none;
+  }
+  @keyframes envShake{
+    10%,90%{ transform:translateX(-1px); }
+    20%,80%{ transform:translateX(3px); }
+    30%,50%,70%{ transform:translateX(-6px); }
+    40%,60%{ transform:translateX(6px); }
+  }
+  .envelope-wrap.shake .envelope{ animation: envShake 0.5s ease; }
+
+  .seal-timer{
+    position:absolute;
+    bottom:-36px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(8,37,36,0.8);
+    border:1px solid rgba(217,175,92,0.5);
+    color:var(--gold-bright);
+    font-family:'Space Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.04em;
+    padding:0.32rem 0.65rem;
+    border-radius:20px;
+    white-space:nowrap;
+    opacity:1;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  .envelope-wrap:not(.locked) .seal-timer{
+    opacity:0;
+    transform:translateX(-50%) translateY(6px);
+    pointer-events:none;
+  }
+
+  .lock-popup{
+    position:absolute;
+    top:-54px;
+    left:50%;
+    transform:translateX(-50%) translateY(8px);
+    background:var(--emerald-deep);
+    color:var(--gold-bright);
+    border:1px solid rgba(217,175,92,0.55);
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.03em;
+    padding:0.55rem 0.95rem;
+    border-radius:10px;
+    white-space:nowrap;
+    box-shadow:var(--shadow);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.3s ease;
+    z-index:5;
+  }
+  .lock-popup::after{
+    content:"";
+    position:absolute;
+    bottom:-6px;
+    left:50%;
+    width:10px; height:10px;
+    background:var(--emerald-deep);
+    border-right:1px solid rgba(217,175,92,0.55);
+    border-bottom:1px solid rgba(217,175,92,0.55);
+    transform:translateX(-50%) rotate(45deg);
+  }
+  .lock-popup.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
   }
 
   .letter-paper{
@@ -412,6 +589,8 @@
   }
 
   .celebrate-btn{
+    position:relative;
+    overflow:hidden;
     font-family:'Space Mono', monospace;
     letter-spacing:0.12em;
     text-transform:uppercase;
@@ -424,7 +603,33 @@
     cursor:pointer;
     box-shadow:0 10px 30px rgba(217,175,92,0.35);
     transition: transform 0.2s ease;
+    animation: celebratePulse 2.4s ease-in-out infinite;
   }
+  .celebrate-btn::after{
+    content:"";
+    position:absolute;
+    top:0; left:-60%;
+    width:35%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,0.75), transparent);
+    transform:skewX(-20deg);
+    animation: celebrateSlash 2.8s ease-in-out infinite;
+  }
+  @keyframes celebratePulse{
+    0%,100%{ transform:scale(1); box-shadow:0 10px 30px rgba(217,175,92,0.35); }
+    50%{ transform:scale(1.05); box-shadow:0 14px 40px rgba(232,68,126,0.45); }
+  }
+  @keyframes celebrateSlash{
+    0%{ left:-60%; }
+    38%{ left:130%; }
+    100%{ left:130%; }
+  }
+  @keyframes celebrateBurst{
+    0%{ transform:scale(1); }
+    30%{ transform:scale(1.28); }
+    55%{ transform:scale(0.9); }
+    100%{ transform:scale(1); }
+  }
+  .celebrate-btn.burst{ animation: celebrateBurst 0.6s ease; }
   .celebrate-btn:hover{transform:translateY(-3px);}
   .celebrate-btn:focus-visible, .envelope-wrap:focus-visible .envelope{
     outline:3px solid var(--gold-bright);
@@ -443,6 +648,13 @@
 </style>
 </head>
 <body>
+
+<!-- Music control, top of page -->
+<button class="music-toggle" id="musicToggle" title="Play the birthday song" aria-label="Play music">♪</button>
+<span class="press-me" id="pressMe" aria-hidden="true">press me</span>
+<audio id="bgMusic" loop preload="none">
+  <source src="music/Birthday Girl.mp3" type="audio/mp3">
+</audio>
 
 <section class="hero">
   <div class="gem"></div>
@@ -507,9 +719,11 @@
   <h3 class="letter-heading">A sealed note</h3>
   <p class="letter-instruction">tap the seal to open it</p>
 
-  <div class="envelope-wrap" id="envelope" tabindex="0" role="button" aria-expanded="false" aria-label="Open the sealed birthday letter">
+  <div class="envelope-wrap locked" id="envelope" tabindex="0" role="button" aria-expanded="false" aria-disabled="true" aria-label="Sealed birthday letter, opens when the countdown ends">
+    <div class="lock-popup" id="lockPopup" role="status">Can be opened on 4th September</div>
     <div class="envelope">
       <div class="seal">
+        <span class="lock-badge" id="lockBadge" aria-hidden="true">🔒</span>
         <svg class="seal-web" viewBox="0 0 64 64" aria-hidden="true">
           <g stroke="rgba(60,26,91,0.45)" stroke-width="0.7" fill="none">
             <line x1="32" y1="32" x2="32" y2="2"/>
@@ -527,9 +741,10 @@
         </svg>
         <span class="seal-letter">S</span>
       </div>
+      <span class="seal-timer" id="sealTimer">--d --:--:--</span>
     </div>
   </div>
-  <p class="tap-note" id="tapNote">✦ click / tap the wax seal ✦</p>
+  <p class="tap-note" id="tapNote">✦ this seal breaks open the moment the countdown hits zero ✦</p>
 
   <div class="letter-paper" id="letterPaper">
     <p>Dear Stella,</p>
@@ -553,10 +768,38 @@
 <script>
   // Countdown to Sept 4, 2026
   const target = new Date("2026-09-04T00:00:00");
+  let sealUnlocked = false;
+
+  function formatMiniTimer(diffMs){
+    const pad = n => String(n).padStart(2,'0');
+    const days = Math.floor(diffMs / (1000*60*60*24));
+    const hours = Math.floor((diffMs / (1000*60*60)) % 24);
+    const mins = Math.floor((diffMs / (1000*60)) % 60);
+    const secs = Math.floor((diffMs / 1000) % 60);
+    return `${days}d ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+  }
+
+  function unlockSeal(){
+    if(sealUnlocked) return;
+    sealUnlocked = true;
+    const envelopeEl = document.getElementById('envelope');
+    const noteEl = document.getElementById('tapNote');
+    envelopeEl.classList.remove('locked');
+    envelopeEl.setAttribute('aria-disabled','false');
+    envelopeEl.setAttribute('aria-label','Open the sealed birthday letter');
+    if(noteEl){
+      noteEl.textContent = '✦ click / tap the wax seal ✦';
+      noteEl.classList.add('ready');
+    }
+  }
+
   function updateCountdown(){
     const now = new Date();
     let diff = target - now;
-    if(diff < 0) diff = 0;
+    if(diff <= 0){
+      diff = 0;
+      unlockSeal();
+    }
     const days = Math.floor(diff / (1000*60*60*24));
     const hours = Math.floor((diff / (1000*60*60)) % 24);
     const mins = Math.floor((diff / (1000*60)) % 60);
@@ -565,6 +808,9 @@
     document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
     document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
     document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+
+    const sealTimerEl = document.getElementById('sealTimer');
+    if(sealTimerEl) sealTimerEl.textContent = formatMiniTimer(diff);
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
@@ -572,7 +818,24 @@
   // Envelope open interaction
   const envelope = document.getElementById('envelope');
 
+  function showLockPopup(){
+    const popup = document.getElementById('lockPopup');
+    if(!popup) return;
+    popup.classList.add('show');
+    clearTimeout(popup._hideTimer);
+    popup._hideTimer = setTimeout(()=> popup.classList.remove('show'), 2200);
+  }
+
   function openLetter(){
+    if(envelope.classList.contains('locked')){
+      envelope.classList.remove('shake');
+      // restart the shake animation even on repeated clicks
+      void envelope.offsetWidth;
+      envelope.classList.add('shake');
+      setTimeout(()=> envelope.classList.remove('shake'), 500);
+      showLockPopup();
+      return;
+    }
     envelope.classList.add('open');
     envelope.setAttribute('aria-expanded','true');
     document.getElementById('letterPaper').classList.add('open');
@@ -589,14 +852,43 @@
   // Celebrate button confetti burst
   const btn = document.getElementById('celebrateBtn');
   btn.addEventListener('click', ()=>{
+    btn.classList.remove('burst');
+    void btn.offsetWidth;
+    btn.classList.add('burst');
+    setTimeout(()=> btn.classList.remove('burst'), 650);
     if(!window.confetti) return;
     const colors = ['#d9af5c','#f3d896','#e8447e','#3c1a5b'];
     confetti({ particleCount: 120, spread: 90, origin:{ y:0.7 }, colors });
     setTimeout(()=> confetti({ particleCount: 80, angle:60, spread:70, origin:{x:0}, colors }), 200);
     setTimeout(()=> confetti({ particleCount: 80, angle:120, spread:70, origin:{x:1}, colors }), 300);
   });
+
+  /* -----------------------------------------------
+     MUSIC TOGGLE
+  ----------------------------------------------- */
+  (function() {
+    const musicBtn = document.getElementById('musicToggle');
+    const audio = document.getElementById('bgMusic');
+    const pressMe = document.getElementById('pressMe');
+    let playing = false;
+
+    musicBtn.addEventListener('click', () => {
+      if (!playing) {
+        audio.play().catch(() => {});
+        musicBtn.textContent = '♫';
+        musicBtn.classList.add('playing');
+        musicBtn.setAttribute('aria-label', 'Pause music');
+      } else {
+        audio.pause();
+        musicBtn.textContent = '♪';
+        musicBtn.classList.remove('playing');
+        musicBtn.setAttribute('aria-label', 'Play music');
+      }
+      playing = !playing;
+      if (pressMe) pressMe.classList.add('hide');
+    });
+  })();
 </script>
-<audio controls="autoplay"><source src="music/Birthday Girl.mp3" type="audio/mp3"></source></audio>
 
 </body>
 </html>
